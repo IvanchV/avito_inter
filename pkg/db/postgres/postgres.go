@@ -7,7 +7,6 @@ import (
 )
 
 func NewPostgresStore() (*sql.DB, error) {
-
 	db, err := sql.Open("postgres", os.Getenv("PG_URL"))
 	if err != nil {
 		return nil, err
