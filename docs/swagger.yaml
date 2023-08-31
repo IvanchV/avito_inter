@@ -1,0 +1,150 @@
+definitions:
+  handlers.ApiAnswer:
+    properties:
+      ans:
+        type: string
+    type: object
+  handlers.ApiError:
+    properties:
+      error:
+        type: string
+    type: object
+  models.ReqUser:
+    properties:
+      add:
+        items:
+          type: string
+        type: array
+      delete:
+        items:
+          type: string
+        type: array
+    type: object
+  models.ResUser:
+    properties:
+      segments:
+        items:
+          type: string
+        type: array
+    type: object
+  models.Segment:
+    properties:
+      name:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Api Server for Avito Segments
+  title: Avito Segments
+  version: "1.0"
+paths:
+  /change_segment/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Сhange users segments
+      parameters:
+      - description: User_id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Arrays of delete or add
+        in: body
+        name: arrays
+        required: true
+        schema:
+          $ref: '#/definitions/models.ReqUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful
+          schema:
+            $ref: '#/definitions/handlers.ApiAnswer'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/handlers.ApiError'
+      summary: ChangeUserSegment
+      tags:
+      - Users
+  /create_segment:
+    post:
+      consumes:
+      - application/json
+      description: Create a new segment
+      parameters:
+      - description: Segment name
+        in: body
+        name: segment
+        required: true
+        schema:
+          $ref: '#/definitions/models.Segment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Segment created
+          schema:
+            $ref: '#/definitions/handlers.ApiAnswer'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/handlers.ApiError'
+      summary: CreateSegment
+      tags:
+      - Segments
+  /delete_segment:
+    delete:
+      consumes:
+      - application/json
+      description: Create a new segment
+      parameters:
+      - description: Segment name
+        in: body
+        name: segment
+        required: true
+        schema:
+          $ref: '#/definitions/models.Segment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Segment deleted
+          schema:
+            $ref: '#/definitions/handlers.ApiAnswer'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/handlers.ApiError'
+      summary: DeleteSegment
+      tags:
+      - Segments
+  /user_segment/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Return all segments of user
+      parameters:
+      - description: User_id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Return User segments
+          schema:
+            $ref: '#/definitions/models.ResUser'
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/handlers.ApiError'
+      summary: GetUserSegment
+      tags:
+      - Users
+swagger: "2.0"
